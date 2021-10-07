@@ -6,14 +6,13 @@ h1{
 }
 .grid{
     display: grid;
-    margin: auto;
     gap: 5%;
-    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    grid-template-columns: repeat(autofit, 1fr);
 }
 .button{
     border: 2px solid black;
     padding: 50px;
-    margin: auto;
+    width: min-content;
     border-radius: 5px;
 }
 .button:hover{
