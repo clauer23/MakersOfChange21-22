@@ -1,14 +1,36 @@
-[
-    {
-      "text": "Music",
-      "src": "./imgs/Music/Template_Music_adobespark.jpeg"
-    },
-    {
-      "text": "Activity",
-      "src": "./imgs/Activity/Template_Act_adobespark.png"
-    },
-    {
-      "text": "Food and Drink",
-      "src": "./imgs/F&D/Template_Food_adobespark.jpeg"
+{
+  "music":{
+    "text": "Music",
+    "src": "./imgs/Music/Template_Music_adobespark.jpeg",
+    "route":"/music",
+    "boards":{}
+  },
+
+  "activity": {
+    "text": "Activity",
+    "src": "./imgs/Activity/Template_Act_adobespark.png",
+    "route":"/activity",
+    "boards":{}
+  },
+
+  "food":{
+    "text": "Food and Drink",
+    "src": "./imgs/F&D/Template_Food_adobespark.jpeg",
+    "route":"/food",
+    "boards":{
+      "eat":{
+        "text":"Food",
+        "src": "./imgs/F&D/Template_Eat.jpg",
+        "route": "/food/eat",
+        "items":{}
+      },
+
+      "drink":{
+        "text":"Drink",
+        "src": "./imgs/F&D/Template_Drink.jpg",
+        "route": "/food/eat",
+        "items":{}
+      }
     }
-]
+  }
+}

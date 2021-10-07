@@ -1,63 +1,97 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 
-class Button extends React.Component{
-    render(){
-        return(
+
+function Button(props){
+    return(
+        <Link to={props.routeTo}>
             <div className="button">
-                <a><img src={this.props.src} alt={this.props.text} /><h2>Gabbie's {this.props.text} Board</h2></a>
+                <img src={props.src} alt={props.text}/> <h2>Gabbie's {props.text} Board</h2>
             </div>
-            
-        );
-    }
+        </Link>
+    );
 }
-class Main extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            error: null,
-            isLoaded: false,
-            data:[]
-        };
-    }
-    componentDidMount() {
-        fetch("./data.json")
-          .then(res => res.json())
-          .then(
-            (result) => {
-              this.setState({
-                isLoaded: true,
-                data: result
-              });
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-              this.setState({
-                isLoaded: true,
-                error
-              });
-            }
-          )
-      }
 
-    render(){
-        return (
-            <div>
-                <h1>Makers of Change 2021-2022</h1>
-                <div className="grid">
-                    {this.state.data.map(item => {
-                        console.log(item);
-                        return <Button src={item.src} text={item.text} key={item.text}/>;
-                    })}
-                </div>
+function Home(props){
+    return(
+        <div>
+            <h1>Makers of Change 2021-2022</h1>
+            <div className="grid">
+                {Object.values(props.data).map(item => {
+                    return <Button src={item.src} text={item.text} routeTo={item.route} key={item.text}/>;
+                })}
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+function Board(props){
+    return(
+        <div>
+            <h1>{props.data.text}</h1>
+            <Link to="/">
+                <div className="button">Back</div>
+            </Link>
+            
+            <div className="grid">
+                
+                {Object.values(props.data.boards).map(item => {
+                    return <Button src={item.src} text={item.text} routeTo={item.route} key={item.text}/>;
+                })}
+            </div>
+        </div>
+    );
+}
+
+function Main(props){
+    let [error, setError] = useState(null);
+    let [isLoaded, setLoaded] = useState(false);
+    let [data, setData] = useState([]);
+
+    useEffect(()=>{
+        fetch("./data.json")
+        .then(res => res.json())
+        .then(
+            (data) => {
+                setLoaded(true);
+                setData(data);
+            },
+            (error) => {
+                setLoaded(true);
+                setError(error);
+            });
+    });
+
+    return(
+        <Router>
+            <Switch>
+                <Route exact path="/">
+                    <Home data={data}/>
+                </Route>
+
+                {Object.entries(data).map(entry=>{
+                    let [key, value] = entry;
+                    return(
+
+                        <Route exact path={value.route} key={key}>
+                            <Board data={value}/>
+                        </Route>
+
+                    );
+                })}
+            </Switch>
+        </Router>
+    )
+}
+
 
 ReactDOM.render(
     <Main/>,
